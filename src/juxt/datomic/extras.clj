@@ -9,7 +9,7 @@
 ;;
 ;; You must not remove this notice, or any other, from this software.
 
-(ns datomic-extras.core
+(ns juxt.datomic.extras
   (:refer-clojure :exclude (read-string))
   (:require
    [datomic.api :as d]
