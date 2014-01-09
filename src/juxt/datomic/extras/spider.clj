@@ -13,9 +13,11 @@
 
 (defn spider
   [row mapping]
-  (letfn [(tr [f]
+  (letfn [(as-coll [c] (if (coll? c) c (list c)))
+          (tr [f]
             (cond
              (vector? f) (fn [x] (filter (apply comp (reverse (map tr f))) x))
+             ;; Collections treated like node-sets are in xpath
              (list? f) (partial map (first f))
              :otherwise f)
             )]
@@ -23,9 +25,8 @@
      (fn [s k path]
        (if-let
            [val (reduce
-                 (fn [e f]
-                   (when e ((tr f) e)))
-                 row path)]
+                 (fn [e f] (when e ((tr f) e)))
+                 row (as-coll path))]
          (assoc s k val)
          s))
      {} mapping)))
